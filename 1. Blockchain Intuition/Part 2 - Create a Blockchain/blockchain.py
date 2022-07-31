@@ -51,7 +51,7 @@ class Blockchain:
         encoded_block = json.dumps(block, sort_keys=True).encode()
         return hashlib.sha256(encoded_block).hexdigest()
 
-    def is_chain_valid(self, chain):  # 블록체인의 유효성 확인 메서드
+    def is_chain_valid(self, chain):  # 블록체인의 유효성 확인 메서드(이전 해시 동일한지 확인, PoW 만족하는지 확인)
         previous_block = chain[0]
         block_index = 1
         while block_index < len(chain):
