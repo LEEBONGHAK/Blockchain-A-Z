@@ -12,6 +12,7 @@ import json  # 블록을 해시하기 전에 블록 인코딩을 위해 사용
 # Flask: 웹 애플리케이션이 되는 Flask 객체를 생성을 위해, jsonify: Postman에서 블록체인과 상호 작용할 때 메세지를 보내기 위해
 from flask import Flask, jsonify
 
+
 # Part 1 - Building a Blockchain
 
 
@@ -45,5 +46,10 @@ class Blockchain:
             else:
                 new_proof += 1
         return new_proof
+
+    def hash(self, block):
+        encoded_block = json.dumps(block, sort_keys=True).encode()
+        return hashlib.sha256(encoded_block).hexdigest()
+
 
 # Part 2 - Mining our Blockchain
