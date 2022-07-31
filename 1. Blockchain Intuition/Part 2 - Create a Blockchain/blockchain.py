@@ -32,10 +32,10 @@ class Blockchain:
         self.chain.append(block)
         return block
 
-    def get_previous_block(self):
+    def get_previous_block(self):   # 가장 마지막 블록을 가져오는 메서드
         return self.chain[-1]
 
-    def proof_of_work(self, previous_proof):
+    def proof_of_work(self, previous_proof):    # 이전 증명값을 이용해 PoW를 수행하는 메서드
         new_proof = 1
         check_proof = False
         while check_proof is False:
@@ -47,9 +47,25 @@ class Blockchain:
                 new_proof += 1
         return new_proof
 
-    def hash(self, block):
+    def hash(self, block):  # 블럭을 해시화하는 메서드
         encoded_block = json.dumps(block, sort_keys=True).encode()
         return hashlib.sha256(encoded_block).hexdigest()
 
+    def is_chain_valid(self, chain):  # 블록체인의 유효성 확인 메서드
+        previous_block = chain[0]
+        block_index = 1
+        while block_index < len(chain):
+            block = chain[block_index]
+            if self.hash(previous_block) != block['previous_hash']:
+                return False
+            previous_proof = previous_block['proof']
+            proof = block['proof']
+            hash_operation = hashlib.sha256(
+                str(proof**2 - previous_proof**2).encode()).hexdigest()
+            if hash_operation[:4] != '0000':
+                return False
+            previous_block = block
+            block_index += 1
+        return True
 
 # Part 2 - Mining our Blockchain
