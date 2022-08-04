@@ -7,7 +7,8 @@
 # Importing the libraries
 import datetime  # 블록이 생성되고 채굴된 타임스탬프를 위해 사용
 import hashlib  # 블록을 해시하기 위해 사용
-import json  # 블록을 해시하기 전에 블록 인코딩을 위해 사용
+import json
+from urllib import response  # 블록을 해시하기 전에 블록 인코딩을 위해 사용
 
 # Flask: 웹 애플리케이션이 되는 Flask 객체를 생성을 위해, jsonify: Postman에서 블록체인과 상호 작용할 때 메세지를 보내기 위해
 from flask import Flask, jsonify
@@ -75,3 +76,19 @@ app = Flask(__name__)
 # Creating a Blockchain
 blockchain = Blockchain()
 
+# Mining a new block
+@app.route('/mine_block', methods=['GET'])
+def mine_block():
+    previous_block = blockchain.get_previous_block()
+    previous_proof = previous_block['proof']
+    proof = blockchain.proof_of_work(previous_proof)
+    previous_hash = blockchain.hash(previous_block)
+    block = blockchain.create_block(proof, previous_hash)
+    response = {
+        'message': 'Congratulations, you just mined a block!',
+        'index': block['index'],
+        'timestamp': block['timestamp'],
+        'proof': block['proof'],
+        'previous_hash': block['previous_hash']
+    }
+    return jsonify(response), 200
