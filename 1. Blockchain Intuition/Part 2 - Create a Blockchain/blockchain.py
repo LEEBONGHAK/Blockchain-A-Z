@@ -5,6 +5,7 @@
 # Postman HTTP Client: https://www.postman.com/
 
 # Importing the libraries
+from cgitb import reset
 import datetime  # 블록이 생성되고 채굴된 타임스탬프를 위해 사용
 import hashlib  # 블록을 해시하기 위해 사용
 import json # 블록을 해시하기 전에 블록 인코딩을 위해 사용
@@ -98,6 +99,20 @@ def get_chain():
         'length': len(blockchain.chain),
         'chain': blockchain.chain
     }
+    return jsonify(response), 200
+
+# Checking if the Blockchain is valid
+@app.route('/is_valid', methods=['GET'])
+def is_valid():
+    is_valid = blockchain.is_chain_valid(blockchain.chain)
+    if is_valid:
+        response = {
+            'message': 'All good. The Blockchain is valid.'
+        }
+    else:
+        response = {
+            'message': 'Houston, we have a problem. The Blockchain is not valid.'
+        }
     return jsonify(response), 200
 
 # Running the app
