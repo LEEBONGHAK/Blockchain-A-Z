@@ -5,7 +5,6 @@
 # Postman HTTP Client: https://www.postman.com/
 
 # Importing the libraries
-from cgitb import reset
 import datetime  # 블록이 생성되고 채굴된 타임스탬프를 위해 사용
 import hashlib  # 블록을 해시하기 위해 사용
 import json # 블록을 해시하기 전에 블록 인코딩을 위해 사용
